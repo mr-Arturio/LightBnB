@@ -2,14 +2,42 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const database = require("../db/database");
 
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: 'labber',
+  password: '123',
+  host: 'localhost',
+  database: 'lightbnb'
+});
+
 const router = express.Router();
 
 // Create a new user
 router.post("/", (req, res) => {
   const user = req.body;
   user.password = bcrypt.hashSync(user.password, 12);
-  database
-    .addUser(user)
+
+  const addUser = function (users) {
+    return pool
+      .query(
+        `INSERT INTO users (name, email, password)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+        [users.name, users.email, users.password]
+      )
+      .then((result) => {
+        if (result.rows.length === 0) {
+          return null;
+        }
+        return result.rows[0];
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+};
+
+  addUser(user)
     .then((user) => {
       if (!user) {
         return res.send({ error: "error" });
@@ -26,7 +54,26 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  database.getUserWithEmail(email).then((user) => {
+  const getUserWithEmail = function (pool, email) {
+    return pool
+      .query(
+        `SELECT *
+         FROM users
+         WHERE email = $1`,
+        [email]
+      )
+      .then((result) => {
+        if (result.rows.length === 0) {
+          return null;
+        }
+        return result.rows[0];
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  getUserWithEmail(pool, email).then((user) => {
     if (!user) {
       return res.send({ error: "no user with that id" });
     }
@@ -59,8 +106,27 @@ router.get("/me", (req, res) => {
     return res.send({ message: "not logged in" });
   }
 
-  database
-    .getUserWithId(userId)
+  const getUserWithId = function (usersId) {
+    return pool
+      .query(
+        `SELECT *
+         FROM users
+         WHERE users.id = $1`,
+        [usersId]
+      )
+      .then((result) => {
+        if (result.rows.length === 0) {
+          return null;
+        }
+        return result.rows[0];
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    };
+
+  
+    getUserWithId(userId)
     .then((user) => {
       if (!user) {
         return res.send({ error: "no user with that id" });
