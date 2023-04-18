@@ -22,26 +22,9 @@ router.post("/", (req, res) => {
   const user = req.body;
   user.password = bcrypt.hashSync(user.password, 12);
 
-  const addUser = function (users) {
-    return pool
-      .query(
-        `INSERT INTO users (name, email, password)
-         VALUES ($1, $2, $3)
-         RETURNING *`,
-        [users.name, users.email, users.password]
-      )
-      .then((result) => {
-        if (result.rows.length === 0) {
-          return null;
-        }
-        return result.rows[0];
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-};
+ 
 
-  addUser(user)
+  database.addUser(user)
     .then((user) => {
       if (!user) {
         return res.send({ error: "error" });
@@ -58,26 +41,9 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const getUserWithEmail = function (pool, email) {
-    return pool
-      .query(
-        `SELECT *
-         FROM users
-         WHERE email = $1`,
-        [email]
-      )
-      .then((result) => {
-        if (result.rows.length === 0) {
-          return null;
-        }
-        return result.rows[0];
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
+ 
 
-  getUserWithEmail(pool, email).then((user) => {
+  database.getUserWithEmail(pool, email).then((user) => {
     if (!user) {
       return res.send({ error: "no user with that id" });
     }
@@ -110,27 +76,10 @@ router.get("/me", (req, res) => {
     return res.send({ message: "not logged in" });
   }
 
-  const getUserWithId = function (usersId) {
-    return pool
-      .query(
-        `SELECT *
-         FROM users
-         WHERE users.id = $1`,
-        [usersId]
-      )
-      .then((result) => {
-        if (result.rows.length === 0) {
-          return null;
-        }
-        return result.rows[0];
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    };
+ 
 
   
-    getUserWithId(userId)
+    database.getUserWithId(userId)
     .then((user) => {
       if (!user) {
         return res.send({ error: "no user with that id" });
