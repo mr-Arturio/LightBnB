@@ -69,13 +69,13 @@ const getUserWithId = function (usersId) {
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-const addUser = function (users) {
+const addUser = function (user) {
   return pool
     .query(
       `INSERT INTO users (name, email, password)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [users.name, users.email, users.password]
+      [user.name, user.email, user.password]
     )
     .then((result) => {
       if (result.rows.length === 0) {
