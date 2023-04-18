@@ -1,15 +1,19 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const database = require("../db/database");
+const db = require("../db/index.js")
 
-const { Pool } = require('pg');
+// Define pool object using db module
+const pool = db.pool;
 
-const pool = new Pool({
-  user: 'labber',
-  password: '123',
-  host: 'localhost',
-  database: 'lightbnb'
-});
+// const { Pool } = require('pg');
+
+// const pool = new Pool({
+//   user: 'labber',
+//   password: '123',
+//   host: 'localhost',
+//   database: 'lightbnb'
+// });
 
 const router = express.Router();
 

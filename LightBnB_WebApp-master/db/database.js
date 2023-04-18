@@ -1,14 +1,18 @@
 const properties = require("./json/properties.json");
 const users = require("./json/users.json");
+const db = require("./index.js");
 
-const { Pool } = require('pg');
+// Define pool object using db module
+const pool = db.pool;
 
-const pool = new Pool({
-  user: 'labber',
-  password: '123',
-  host: 'localhost',
-  database: 'lightbnb'
-});
+// const { Pool } = require('pg');
+
+// const pool = new Pool({
+//   user: 'labber',
+//   password: '123',
+//   host: 'localhost',
+//   database: 'lightbnb'
+// });
 
 /// Users
 
@@ -125,7 +129,7 @@ const getAllProperties = function (options, limit = 10) {
  }
 
  if (options.minimum_rating) {
-  if (queryParams.length === 0) {
+  if (queryParams.length === 0) {                      
     queryString += `WHERE `;
   } else {
     queryString += `AND `;
@@ -182,7 +186,6 @@ const addProperty = function (property) {
   .catch((err) => {
     console.log(err.message);
   });
-
 
 
 };
