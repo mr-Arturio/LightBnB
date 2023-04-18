@@ -99,12 +99,12 @@ const getAllReservations = function (guest_id, limit = 10) {
 
   return pool
   .query(
- `SELECT reservations.id AS id, properties.title AS title, reservations.start_date AS start_date, cost_per_night, avg(rating)
+ `SELECT properties.*, reservations.*, reservations.id AS id, properties.title AS title, reservations.start_date AS start_date, cost_per_night, avg(rating) AS average_rating
   FROM reservations
   JOIN properties ON property_id = properties.id
   JOIN property_reviews ON reservation_id = reservations.id
   WHERE reservations.guest_id = $1
-  GROUP BY reservations.id, properties.title, reservations.start_date, cost_per_night
+  GROUP BY properties.id, reservations.id, properties.title, reservations.start_date, cost_per_night
   ORDER BY start_date DESC
   LIMIT $2`,
 [guest_id, limit]
@@ -182,7 +182,7 @@ const getAllProperties = function (options, limit = 10) {
  
  console.log(queryString, queryParams);
 
- return pool.query(queryString, queryParams).then((res) => res.row);
+ return db.query(queryString, queryParams).then((res) => res.rows);
 };
 /**
  * Add a property to the database
