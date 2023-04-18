@@ -79,6 +79,9 @@ git clone
 ### database Relations Diagram
 ![database relations diagram](./docs/diagram.png)
 
+### Application view
+![app page view](./docs/page.png)
+
 
 ___
 This project was created as a part of educational process at [Lightouse labs](https://www.lighthouselabs.ca/).
