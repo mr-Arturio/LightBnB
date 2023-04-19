@@ -82,6 +82,12 @@ git clone
 ### Application view
 ![app page view](./docs/page.png)
 
-
+## Dependencies
+* `pg`: PostgreSQL client for Node.js. `npm i pg`
+* `dotenv`: Loads environment variables from a .env file. `npm i dotenv`
+* `express`: Fast, unopinionated, minimalist web framework for Node.js. `npm i express`
+* `bcrypt`: A library to help you hash passwords. `npm i bcrypt`
+* `cookie-session`: Simple cookie-based session middleware. `npm i cookie-session`
+* `path`: Built-in Node.js module that provides utilities for working with file and directory paths.  `npm i path`
 ___
 This project was created as a part of educational process at [Lightouse labs](https://www.lighthouselabs.ca/).
