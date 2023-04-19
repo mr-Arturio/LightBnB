@@ -1,19 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const database = require("../db/database");
-const db = require("../db/index.js")
+const db = require("../db/index.js");
 
 // Define pool object using db module
 const pool = db.pool;
-
-// const { Pool } = require('pg');
-
-// const pool = new Pool({
-//   user: 'labber',
-//   password: '123',
-//   host: 'localhost',
-//   database: 'lightbnb'
-// });
 
 const router = express.Router();
 
@@ -22,7 +13,6 @@ router.post("/", (req, res) => {
   const user = req.body;
   user.password = bcrypt.hashSync(user.password, 12);
 
- 
 
   database.addUser(user)
     .then((user) => {
@@ -41,7 +31,6 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
- 
 
   database.getUserWithEmail(pool, email).then((user) => {
     if (!user) {
@@ -76,10 +65,7 @@ router.get("/me", (req, res) => {
     return res.send({ message: "not logged in" });
   }
 
- 
-
-  
-    database.getUserWithId(userId)
+  database.getUserWithId(userId)
     .then((user) => {
       if (!user) {
         return res.send({ error: "no user with that id" });
