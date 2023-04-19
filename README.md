@@ -77,10 +77,10 @@ git clone
 
 
 ### database Relations Diagram
-![database relations diagram](./docs/diagram.png)
+![database relations diagram](./LightBnB_WebApp-master/docs/diagram.png)
 
 ### Application view
-![app page view](./docs/page.png)
+![app page view](./LightBnB_WebApp-master/docs/page.png)
 
 ## Dependencies
 * `pg`: PostgreSQL client for Node.js. `npm i pg`
